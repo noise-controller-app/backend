@@ -1,9 +1,9 @@
 const express = require('express')
 
-const Teachers = require('./auth-model.js');
+const Teachers = require('./teacher-model.js');
 const bcrypt = require('bcryptjs')
 
-const {restricted, restricted_by_profile} = require('./authenticate-middleware.js')
+const {restricted, restricted_by_profile} = require('../authenticate-middleware.js')
 
 const router = require('express').Router();
 

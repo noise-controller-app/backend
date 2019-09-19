@@ -36,7 +36,7 @@ Deletes the Whole Account of the teacher.
 *-SCORES-*
 *--------*
 **********
-**GET API/SCORE/START**
+**POST API/SCORE/START**
 Returns a new score object, or an error if a new one is started while an open one exists.
 
 **PUT API/SCORE/END**

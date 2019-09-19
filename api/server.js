@@ -2,8 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
-const authenticate = require('../auth/authenticate-middleware.js');
-const authRouter = require('../auth/auth-router.js');
+const authenticate = require('../components/authenticate-middleware.js');
+const teacherRouter = require('../components/teachers/teacher-router.js');
+const scoreRouter = require('../components/score/score-router.js');
 
 const session = require('express-session');
 
