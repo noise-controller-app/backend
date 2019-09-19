@@ -66,6 +66,16 @@ router.put('/end', restricted, (req, res) => {
     .catch(error => {
       res.status(500).json({message: "Unknown error."})
     })
+});
+
+router.delete('/:id', restricted, (req, res) => {
+  Scores.remove(req.params.id)
+  .then(oldscore => {
+    res.status(201).json(oldscore)
+  })
+  .catch(error => {
+    res.status(500).json({message: "Unknown error."})
+  })
 
 });
 
