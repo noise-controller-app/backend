@@ -3,7 +3,7 @@ const express = require('express')
 const Teachers = require('./auth-model.js');
 const bcrypt = require('bcryptjs')
 
-const restricted = require('./authenticate-middleware.js')
+const {restricted, restricted_by_profile} = require('./authenticate-middleware.js')
 
 const router = require('express').Router();
 
@@ -43,7 +43,7 @@ router.delete('/logout', restricted, (req, res) => {
   res.status(200).json({message: "Logged out!"})
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', restricted_by_profile, (req, res) => {
   const {id} = req.params
     console.log("GETTING ", id)
 
@@ -57,11 +57,11 @@ router.get('/:id', (req, res) => {
 
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', restricted_by_profile, (req, res) => {
   const {id} = req.params
   const data = req.body
 
-  Teachers.update(id)
+  Teachers.update(data, id)
   .then(teacher => {
     res.status(201).json(teacher)
   })
@@ -70,7 +70,7 @@ router.put('/:id', (req, res) => {
   })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', restricted_by_profile, (req, res) => {
   const {id} = req.params
 
   Teachers.remove(id)
