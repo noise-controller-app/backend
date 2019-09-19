@@ -29,6 +29,6 @@ server.use(cors());
 server.use(express.json());
 
 server.use('/api/teachers', teacherRouter);
-server.use('/api/scores', teacherRouter);
+server.use('/api/scores', scoreRouter);
 
 module.exports = server;

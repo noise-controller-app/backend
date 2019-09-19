@@ -20,7 +20,7 @@ router.get('/history', (req, res) => {
 });
 
 router.post('/start', (req, res) => {
-  data = {score_teacher_id: req.session.user.teacher_id, score: 100}
+  data = {score_teacher_id: req.session.user.teacher_id, score_value: 100}
 
   Scores.add(data)
   .then(score => {
