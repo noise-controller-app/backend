@@ -9,6 +9,7 @@ exports.up = function(knex) {
         .inTable('teachers')
         .onUpdate('CASCADE')
         .onDelete('CASCADE');
+    scores.boolean('score_closed');
   });
 };
 

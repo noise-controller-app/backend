@@ -2,11 +2,12 @@ const db = require('../../database/dbConfig.js');
 
 module.exports = {
   find,
+  getOpen,
   findById,
-  findByUsername,
   add,
   update,
-  remove
+  remove,
+  removeAllForTeacher
 };
 
 
@@ -17,23 +18,24 @@ function find() {
 
 function findById(id) {
   return db('scores')
-    .select('username', 'score_name', 'mic_sensitivity', 'animal_change_time')
     .where( 'score_id', id )
     .first();
 }
 
-function findByUsername(username) {
-  return db('scores')
-    .where({ username })
-    .first();
-}
 
 function add(score) {
   return db('scores')
     .insert(score)
     .then(ids => {
-      return "Success.";
+      return findById(ids[0]);
     });
+}
+
+function getOpen(teacher_id) {
+  return db('scores')
+    .where('score_teacher_id', teacher_id)
+    .where('score_closed', 0)
+    .first();
 }
 
 function update(changes, id) {
@@ -45,5 +47,11 @@ function update(changes, id) {
 function remove(id) {
   return db('scores')
     .where('score_id', id)
+    .del();
+}
+
+function removeAllForTeacher(teacher_id) {
+  return db('scores')
+    .where('score_teacher_id', teacher_id)
     .del();
 }
