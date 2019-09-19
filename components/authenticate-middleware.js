@@ -5,7 +5,7 @@
 
 function restricted(req, res, next) {
   const user = req.session.user
-  console.log("checking", req.session.user, user, req.session)
+  console.log("checking", req.session.user, "USER", user, req.session)
   if(user) {
     next();
   } else {

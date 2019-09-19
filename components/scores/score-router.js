@@ -1,14 +1,14 @@
 const express = require('express')
 
-const Scores = require('../../scores/auth-model.js');
+const Scores = require('./score-model.js');
 const bcrypt = require('bcryptjs')
 
-const {restricted, restricted_by_profile} = require('../../scores/authenticate-middleware.js')
+const {restricted, restricted_by_profile} = require('../authenticate-middleware.js')
 
 const router = require('express').Router();
 
 
-router.get('/history', restricted, (req, res) => {
+router.get('/history', (req, res) => {
   Scores.find(req.session.user.teacher_id)
   .then(score => {
     res.status(200).json(score)
@@ -19,7 +19,7 @@ router.get('/history', restricted, (req, res) => {
 
 });
 
-router.post('/start', restricted, (req, res) => {
+router.post('/start', (req, res) => {
   data = {score_teacher_id: req.session.user.teacher_id, score: 100}
 
   Scores.add(data)
@@ -32,7 +32,7 @@ router.post('/start', restricted, (req, res) => {
 });
 
 
-router.put('/end/:id', restricted, (req, res) => {
+router.put('/end/:id', (req, res) => {
   const {id} = req.params
   const data = req.body
 

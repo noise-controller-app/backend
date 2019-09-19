@@ -4,7 +4,7 @@ const helmet = require('helmet');
 
 const authenticate = require('../components/authenticate-middleware.js');
 const teacherRouter = require('../components/teachers/teacher-router.js');
-const scoreRouter = require('../components/score/score-router.js');
+const scoreRouter = require('../components/scores/score-router.js');
 
 const session = require('express-session');
 
@@ -28,6 +28,7 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
-server.use('/api/teachers', authRouter);
+server.use('/api/teachers', teacherRouter);
+server.use('/api/scores', teacherRouter);
 
 module.exports = server;
