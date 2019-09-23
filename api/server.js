@@ -28,6 +28,11 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
+server.get('/', (req, res) => {
+  res.send("Connected to api.")
+});
+
+
 server.use('/api/teachers', teacherRouter);
 server.use('/api/scores', scoreRouter);
 
