@@ -14,7 +14,8 @@ router.post('/register', (req, res) => {
 
   Teachers.add(teacher)
   .then(teacher => {
-    res.status(201).json(teacher)
+    req.session.user = teacher
+    res.status(201).json({message: "Welcome! Successfully registered & logged in.", teacher: teacher})
   })
   .catch(error => {
     res.status(500).json({message: "There was an error during sign up."})
@@ -28,7 +29,7 @@ router.post('/login', (req, res) => {
   .then(teacher => {
     if(teacher && bcrypt.compareSync(password, teacher.password)){
       req.session.user = teacher
-      res.status(200).json({message: "Welcome!"})
+      res.status(201).json({message: "Welcome! Successfully logged in.", teacher: teacher})
     } else {
       res.status(500).json({message: "Invalid Credentials."})
     }
