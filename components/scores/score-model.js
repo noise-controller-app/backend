@@ -11,8 +11,9 @@ module.exports = {
 };
 
 
-function find() {
-  return db('scores');
+function find(teacher_id) {
+  return db('scores')
+  .where('score_teacher_id', teacher_id);
 }
 
 
