@@ -7,6 +7,8 @@ Require:
 str username (unique, required)
 str password (required)
 str teacher_name (what they go by in front of the class)
+Returns:
+Teacher object
 ***
 Creates an account for the teacher, and logs them in.
 USERNAME is what they use to login, TEACHER_NAME is what is displayed to the class.
@@ -15,6 +17,9 @@ USERNAME is what they use to login, TEACHER_NAME is what is displayed to the cla
 Require:
 str username (required)
 str password (required)
+Returns:
+Teacher object
+Scores array
 ***
 Logs a teacher in.
 

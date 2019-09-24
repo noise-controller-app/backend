@@ -1,6 +1,8 @@
 const express = require('express')
 
 const Teachers = require('./teacher-model.js');
+const Scores = require('../scores/score-model.js');
+
 const bcrypt = require('bcryptjs')
 
 const {restricted, restricted_by_profile} = require('../authenticate-middleware.js')
@@ -29,7 +31,13 @@ router.post('/login', (req, res) => {
   .then(teacher => {
     if(teacher && bcrypt.compareSync(password, teacher.password)){
       req.session.user = teacher
-      res.status(201).json({message: "Welcome! Successfully logged in.", teacher: teacher})
+      Scores.find(teacher.teacher_id)
+      .then(scores => {
+        res.status(201).json({message: "Welcome! Successfully logged in.", teacher: teacher, scores: scores})
+      })
+      .catch(error => {
+        res.status(500).json({message: "Invalid Credentials."})
+      })
     } else {
       res.status(500).json({message: "Invalid Credentials."})
     }
@@ -50,7 +58,10 @@ router.get('/:id', restricted_by_profile, (req, res) => {
 
   Teachers.findById(id)
   .then(teacher => {
-    res.status(200).json(teacher)
+    Scores.find(teacher.teacher_id)
+    .then(scores => {
+      res.status(201).json({teacher: teacher, scores: scores})
+    })
   })
   .catch(error => {
     res.status(500).json({message: "Could not find teacher with that id."})
