@@ -32,7 +32,7 @@ function add(teacher) {
   return db('teachers')
     .insert(teacher)
     .then(ids => {
-      return "Success.";
+      return findById(ids[0])
     });
 }
 
