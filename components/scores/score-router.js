@@ -69,6 +69,17 @@ router.put('/end', restricted, (req, res) => {
     })
 });
 
+router.delete('/reset', restricted, (req, res) => {
+  Scores.removeAllForTeacher(req.decodedToken.user.teacher_id)
+    .then(score => {
+      res.status(200).json(score)
+    })
+    .catch(error => {
+      res.status(500).json({message: "Unknown error."})
+    })
+})
+
+
 router.delete('/:id', restricted, (req, res) => {
   Scores.remove(req.params.id)
   .then(oldscore => {
@@ -79,16 +90,6 @@ router.delete('/:id', restricted, (req, res) => {
   })
 
 });
-
-router.delete('/reset', restricted, (req, res) => {
-  Scores.removeAllForTeacher(req.decodedToken.user.teacher_id)
-    .then(score => {
-      res.status(200).json(score)
-    })
-    .catch(error => {
-      res.status(500).json({message: "Unknown error."})
-    })
-})
 
 
 
