@@ -16,11 +16,11 @@ function restricted(req, res, next) {
         console.log(err)
         res.status(401).json({message: "Error.", error: err})
       } else {
+        req.decodedToken = decodedToken
         next();
       }
     })
   }else{
-    req.decodedToken = decodedToken
     res.status(400).json({message: "No token provided."})
   }
 }
