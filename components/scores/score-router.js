@@ -21,6 +21,7 @@ router.get('/history', restricted, (req, res) => {
 
 router.post('/start', restricted, (req, res) => {
 
+  console.log("PAYLOAD", req.decodedToken)
   Scores.getOpen(req.decodedToken.payload.user.teacher_id)
     .then(score => {
       if(score) {
