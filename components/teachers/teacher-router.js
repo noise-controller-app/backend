@@ -99,7 +99,7 @@ router.delete('/:id', restricted_by_profile, (req, res) => {
   })
 });
 
-function generateToken(user) {
+function generateToken(user) { 
   const payload = {
     subject: user.teacher_id, // sub in payload is what the token is about
     user: user
