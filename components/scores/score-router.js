@@ -24,9 +24,10 @@ router.post('/start', restricted, (req, res) => {
   Scores.getOpen(req.decodedToken.user.teacher_id)
     .then(score => {
       if(score) {
+
         res.status(201).json(score)
       } else {
-        data = {score_teacher_id: req.session.user.teacher_id, score_value: 100, score_closed: 0}
+        data = {score_teacher_id: req.decodedToken.user.teacher_id, score_value: 100, score_closed: 0}
         Scores.add(data)
         .then(newscore => {
           res.status(201).json(newscore)
