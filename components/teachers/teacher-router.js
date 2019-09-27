@@ -109,7 +109,7 @@ function generateToken(user) {
     expiresIn: '1d', // show other available options in the library's documentation
   };
 
-  console.log(process.env.JWT_SECRET)
+  console.log("SECRET:", process.env.JWT_SECRET)
 
   // extract the secret away so it can be required and used where needed
   return jwt.sign(payload, process.env.JWT_SECRET, options); // this method is synchronous
