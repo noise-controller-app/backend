@@ -9,7 +9,7 @@ const router = require('express').Router();
 
 
 router.get('/history', restricted, (req, res) => {
-  Scores.find(req.decodedToken.payload.user.teacher_id)
+  Scores.find(req.decodedToken.user.teacher_id)
   .then(score => {
     res.status(200).json(score)
   })
@@ -21,8 +21,7 @@ router.get('/history', restricted, (req, res) => {
 
 router.post('/start', restricted, (req, res) => {
 
-  console.log("PAYLOAD", req.decodedToken)
-  Scores.getOpen(req.decodedToken.payload.user.teacher_id)
+  Scores.getOpen(req.decodedToken.user.teacher_id)
     .then(score => {
       if(score) {
         res.status(201).json(score)
@@ -50,7 +49,7 @@ router.put('/end', restricted, (req, res) => {
   const data = req.body
   data.score_closed = 1
 
-  Scores.getOpen(req.decodedToken.payload.user.teacher_id)
+  Scores.getOpen(req.decodedToken.user.teacher_id)
     .then(score => {
       if(score) {
         Scores.update(data, score.score_id)
@@ -81,7 +80,7 @@ router.delete('/:id', restricted, (req, res) => {
 });
 
 router.delete('/reset', restricted, (req, res) => {
-  Scores.removeAllForTeacher(req.decodedToken.payload.user.teacher_id)
+  Scores.removeAllForTeacher(req.decodedToken.user.teacher_id)
     .then(score => {
       res.status(200).json(score)
     })
