@@ -5,18 +5,21 @@ const Scores = require('../scores/score-model.js');
 
 const bcrypt = require('bcryptjs')
 
+const jwt = require('jsonwebtoken')
+
 const {restricted, restricted_by_profile} = require('../authenticate-middleware.js')
 
 const router = require('express').Router();
 
 router.post('/register', (req, res) => {
   let teacher = req.body
+  console.log(teacher)
 
   teacher.password = bcrypt.hashSync(teacher.password, 10)
+  console.log(teacher)
 
   Teachers.add(teacher)
   .then(teacher => {
-    req.session.user = teacher
     res.status(201).json({message: "Welcome! Successfully registered & logged in.", teacher: teacher})
   })
   .catch(error => {
@@ -30,10 +33,12 @@ router.post('/login', (req, res) => {
   Teachers.findByUsername(username)
   .then(teacher => {
     if(teacher && bcrypt.compareSync(password, teacher.password)){
-      req.session.user = teacher
+
+      const token = generateToken(teacher)
       Scores.find(teacher.teacher_id)
+
       .then(scores => {
-        res.status(201).json({message: "Welcome! Successfully logged in.", teacher: teacher, scores: scores})
+        res.status(201).json({token: token, message: "Welcome! Successfully logged in.", teacher: teacher, scores: scores})
       })
       .catch(error => {
         res.status(500).json({message: "Invalid Credentials."})
@@ -94,6 +99,18 @@ router.delete('/:id', restricted_by_profile, (req, res) => {
   })
 });
 
+function generateToken(user) {
+  const payload = {
+    subject: user.teacher_id, // sub in payload is what the token is about
+    user: user
+  };
 
+  const options = {
+    expiresIn: '1d', // show other available options in the library's documentation
+  };
+
+  // extract the secret away so it can be required and used where needed
+  return jwt.sign(payload, process.env.JWT_SECRET, options); // this method is synchronous
+}
 
 module.exports = router;

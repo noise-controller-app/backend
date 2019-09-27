@@ -3,26 +3,30 @@
   before granting access to the next middleware/route handler
 */
 
-
-
-
+const jwt = require('jsonwebtoken')
 
 function restricted(req, res, next) {
-  const user = req.session.user
-  if(user) {
-    next();
-  } else {
-    res.status(400).json({message: "Please log in."})
+  const token = req.headers.authorization
+
+  console.log(process.env.JWT_SECRET, token)
+  if(token){
+    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+      console.log("INSIDE VERIFY")
+      if(err){
+        console.log(err)
+        res.status(401).json({message: "Error.", error: err})
+      } else {
+        next();
+      }
+    })
+  }else{
+    req.decodedToken = decodedToken
+    res.status(400).json({message: "No token provided."})
   }
 }
 
 function restricted_by_profile(req, res, next) {
-  const user = req.session.user
-  if(user && user.teacher_id == req.params.id) {
-    next();
-  } else {
-    res.status(400).json({message: "Please log in."})
-  }
+    restricted(req, res, next)
 }
 
 module.exports = {restricted, restricted_by_profile}
